@@ -54,7 +54,7 @@ export default async function RootLayout({
             </div>
           )}
 
-          )}
+
 
           <SiteHeader
             session={session}
