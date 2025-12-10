@@ -161,8 +161,8 @@ export default async function HomePage() {
         </section>
 
         {/* 3D Experience Showcase */}
-        <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 p-0 min-h-[500px] md:min-h-[600px]">
-          <div className="grid md:grid-cols-2 gap-0 items-center min-h-[500px] md:min-h-[600px]">
+        <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 p-0 min-h-[400px] md:min-h-[600px]">
+          <div className="grid md:grid-cols-2 gap-0 items-center min-h-[400px] md:min-h-[600px]">
             {/* Text Content */}
             <FadeIn className="p-8 md:p-16 relative z-10">
               <div className="inline-block rounded-full bg-purple-500/20 px-4 py-2 text-sm font-medium text-purple-300 backdrop-blur-sm border border-purple-400/30 mb-6">
@@ -206,7 +206,7 @@ export default async function HomePage() {
             </FadeIn>
 
             {/* 3D Animation */}
-            <FadeIn delay={0.2} className="relative h-[500px] md:h-[600px]">
+            <FadeIn delay={0.2} className="relative h-[350px] md:h-[600px]">
               <SplineViewer
                 className="w-full h-full"
                 url="https://prod.spline.design/Fygu8CYnUC3tc1j9/scene.splinecode"
@@ -216,7 +216,7 @@ export default async function HomePage() {
         </section>
 
         {/* Strategic Partner - Middle Placement */}
-        <section className="relative overflow-hidden rounded-3xl bg-white border shadow-sm p-8 md:p-12">
+        <section className="relative overflow-hidden rounded-3xl bg-white border shadow-sm p-6 md:p-12">
           <FadeIn className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
             <div className="relative w-40 h-40 md:w-56 md:h-56 flex-shrink-0 transition-transform hover:scale-105 duration-500">
               <div className="absolute inset-0 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full animate-pulse opacity-50"></div>
@@ -241,7 +241,7 @@ export default async function HomePage() {
         </section>
 
         {/* Setup Steps */}
-        <section className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-3xl p-8 md:p-16">
+        <section className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-3xl p-6 md:p-16">
           <FadeIn className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">It's simple and easy to set up</h2>
           </FadeIn>
@@ -268,7 +268,7 @@ export default async function HomePage() {
         </section>
 
         {/* Show Love Feature */}
-        <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-pink-500 to-rose-500 p-8 md:p-16 text-white">
+        <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-pink-500 to-rose-500 p-6 md:p-16 text-white">
           <div className="relative z-10 grid gap-8 md:grid-cols-2 items-center">
             <FadeIn>
               <Heart className="h-16 w-16 mb-6 fill-white" />
@@ -378,7 +378,7 @@ export default async function HomePage() {
         </section>
 
         {/* Free Ebook CTA */}
-        <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-600 to-purple-800 p-8 md:p-16 text-white">
+        <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-600 to-purple-800 p-6 md:p-16 text-white">
           <FadeIn className="relative z-10 text-center max-w-3xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Get started creating & selling digital products!

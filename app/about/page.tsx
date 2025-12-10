@@ -108,7 +108,7 @@ export default function AboutPage() {
                 </section>
 
                 {/* In Collaboration With */}
-                <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-50 to-gray-100 border p-8 md:p-12">
+                <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-50 to-gray-100 border p-6 md:p-12">
                     <FadeIn className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
                         <div className="relative w-40 h-40 md:w-56 md:h-56 flex-shrink-0 transition-transform hover:scale-105 duration-500">
                             <div className="absolute inset-0 bg-white rounded-full shadow-xl"></div>
@@ -135,7 +135,7 @@ export default function AboutPage() {
                 </section>
 
                 {/* Why Choose Us */}
-                <section className="bg-gradient-to-r from-purple-100 to-pink-100 rounded-3xl p-8 md:p-12">
+                <section className="bg-gradient-to-r from-purple-100 to-pink-100 rounded-3xl p-6 md:p-12">
                     <FadeIn className="text-center mb-12">
                         <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose Digital Flux?</h2>
                         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -214,7 +214,7 @@ export default function AboutPage() {
                 </section>
 
                 {/* Courses Section - Coming Soon */}
-                <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 p-12 md:p-16 text-white">
+                <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 p-8 md:p-16 text-white">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500 rounded-full blur-3xl opacity-20"></div>
                     <div className="absolute bottom-0 left-0 w-64 h-64 bg-pink-500 rounded-full blur-3xl opacity-20"></div>
 
