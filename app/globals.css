@@ -10,20 +10,24 @@
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 262 83% 58%; /* Vibrant Purple */
+    --primary: 262 83% 58%;
+    /* Vibrant Purple */
     --primary-foreground: 210 40% 98%;
-    --secondary: 324 100% 90%; /* Soft Pink */
+    --secondary: 324 100% 90%;
+    /* Soft Pink */
     --secondary-foreground: 222.2 47.4% 11.2%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 262 83% 96%; /* Very light purple for accents */
+    --accent: 262 83% 96%;
+    /* Very light purple for accents */
     --accent-foreground: 222.2 47.4% 11.2%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 262 83% 58%;
-    --radius: 0.75rem; /* Slightly rounder */
+    --radius: 0.75rem;
+    /* Slightly rounder */
   }
 
   .dark {
@@ -33,7 +37,8 @@
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 262 83% 68%; /* Lighter purple for dark mode */
+    --primary: 262 83% 68%;
+    /* Lighter purple for dark mode */
     --primary-foreground: 222.2 47.4% 11.2%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -53,8 +58,8 @@
   * {
     @apply border-border;
   }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground overflow-x-hidden;
   }
 }
-

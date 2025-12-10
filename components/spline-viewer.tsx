@@ -36,6 +36,12 @@ export default function SplineViewer({
             return
         }
 
+        // Performance Check: Disable on mobile/tablet devices
+        if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+            console.log('Spline disabled on mobile for performance')
+            return
+        }
+
         const script = document.createElement('script')
         script.type = 'module'
         script.src = 'https://unpkg.com/@splinetool/viewer@1.12.6/build/spline-viewer.js'

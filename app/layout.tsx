@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { Providers } from './providers'
 import { BrandLogo } from '@/components/brand-logo'
+import { SiteHeader } from '@/components/site-header'
 import Link from 'next/link'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
@@ -53,33 +54,14 @@ export default async function RootLayout({
             </div>
           )}
 
-          <header className="sticky top-0 z-30 border-b bg-white/80 backdrop-blur">
-            <div className="container mx-auto flex items-center justify-between gap-6 px-4 py-3">
-              <BrandLogo size={180} />
-              <div className="flex flex-1 items-center justify-end gap-6">
-                <nav className="flex flex-wrap items-center gap-6 text-base font-semibold lg:text-lg">
-                  <Link href="/">{dict.nav.home}</Link>
-                  <Link href="/browse">{dict.nav.browse}</Link>
-                  <Link href="/how-to-use">How to Use</Link>
-                  <Link href="/about">About Us</Link>
-                  {session && <Link href="/dashboard">{dict.nav.dashboard}</Link>}
-                  {isSeller && <Link href="/seller">{dict.nav.seller}</Link>}
-                  {isAdmin && <Link href="/admin">{dict.nav.admin}</Link>}
-                  {!session && (
-                    <>
-                      <Link href="/auth/signin">{dict.nav.signIn}</Link>
-                      <Link href="/auth/signup">{dict.nav.signUp}</Link>
-                    </>
-                  )}
-                  {session && <Link href="/api/auth/signout">{dict.nav.signOut}</Link>}
-                </nav>
-                <div className="flex items-center gap-2">
-                  <CurrencySwitcher />
-                  <LanguageSwitcher />
-                </div>
-              </div>
-            </div>
-          </header>
+          )}
+
+          <SiteHeader
+            session={session}
+            isSeller={isSeller}
+            isAdmin={isAdmin}
+            dict={dict}
+          />
           <div className="flex-1 relative z-10">
             <Providers>{children}</Providers>
           </div>
