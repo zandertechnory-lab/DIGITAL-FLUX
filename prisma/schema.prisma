@@ -1,0 +1,290 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  BUYER
+  SELLER
+  ADMIN
+}
+
+enum ProductType {
+  COURSE
+  DIGITAL_PRODUCT
+  EVENT
+  SERVICE
+  MASTERCLASS
+}
+
+enum ProductStatus {
+  DRAFT
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum PayoutStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum SubscriptionPlan {
+  FREE
+  PRO
+}
+
+enum FileType {
+  VIDEO
+  PDF
+  ZIP
+  DOCX
+  IMAGE
+  OTHER
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  password      String
+  role          UserRole  @default(BUYER)
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  sellerProfile SellerProfile?
+  purchases     Transaction[] @relation("Buyer")
+  sales         Transaction[] @relation("Seller")
+  products      Product[]
+  payouts       Payout[]
+  subscription  Subscription?
+  boostScores   BoostScore[]
+
+  @@map("users")
+}
+
+model SellerProfile {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  businessName      String?
+  phoneNumber       String?
+  mobileMoneyNumber String?
+  mobileMoneyProvider String? // MTN or Orange
+  bankAccountNumber String?
+  bankName          String?
+  address           String?
+  bio               String?
+  isOwner           Boolean  @default(false) // Platform owner gets 0% commission
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("seller_profiles")
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  slug        String    @unique
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  products    Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id              String        @id @default(cuid())
+  title           String
+  slug            String        @unique
+  description     String        @db.Text
+  price           Float
+  type            ProductType
+  status          ProductStatus @default(PENDING)
+  thumbnail       String?
+  sellerId        String
+  categoryId      String?
+  featured        Boolean       @default(false)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  // Relations
+  seller          User          @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  category        Category?     @relation(fields: [categoryId], references: [id])
+  files           File[]
+  courseMetadata  CourseMetadata?
+  eventMetadata   EventMetadata?
+  serviceMetadata ServiceMetadata?
+  transactions    Transaction[]
+  boostScore      BoostScore?
+
+  @@index([slug])
+  @@index([status])
+  @@index([type])
+  @@index([sellerId])
+  @@map("products")
+}
+
+model CourseMetadata {
+  id          String   @id @default(cuid())
+  productId   String   @unique
+  duration    Int?     // in minutes
+  level       String?  // Beginner, Intermediate, Advanced
+  language    String?
+  instructor  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("course_metadata")
+}
+
+model EventMetadata {
+  id          String   @id @default(cuid())
+  productId   String   @unique
+  eventDate   DateTime
+  location    String?
+  isOnline    Boolean  @default(false)
+  maxAttendees Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("event_metadata")
+}
+
+model ServiceMetadata {
+  id          String   @id @default(cuid())
+  productId   String   @unique
+  duration    Int?     // in hours
+  deliveryTime String? // e.g., "3-5 business days"
+  isRecurring Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("service_metadata")
+}
+
+model File {
+  id          String   @id @default(cuid())
+  productId   String
+  name        String
+  url         String
+  s3Key       String
+  type        FileType
+  size        Int      // in bytes
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@map("files")
+}
+
+model Transaction {
+  id              String            @id @default(cuid())
+  buyerId         String
+  sellerId        String
+  productId       String
+  amount          Float
+  commission      Float
+  sellerAmount    Float
+  status          TransactionStatus @default(PENDING)
+  flutterwaveTxId String?           @unique
+  flutterwaveRef  String?
+  paymentMethod   String?            // mobile_money_mtn, mobile_money_orange, card
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  buyer           User              @relation("Buyer", fields: [buyerId], references: [id])
+  seller          User              @relation("Seller", fields: [sellerId], references: [id])
+  product         Product           @relation(fields: [productId], references: [id])
+  payout          Payout?
+
+  @@index([buyerId])
+  @@index([sellerId])
+  @@index([status])
+  @@index([flutterwaveTxId])
+  @@map("transactions")
+}
+
+model Payout {
+  id                    String      @id @default(cuid())
+  sellerId              String
+  transactionId         String?     @unique
+  amount                Float
+  status                PayoutStatus @default(PENDING)
+  flutterwavePayoutId   String?
+  flutterwaveRef        String?
+  mobileMoneyNumber     String
+  mobileMoneyProvider   String      // MTN or Orange
+  failureReason         String?
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+
+  seller                User        @relation(fields: [sellerId], references: [id])
+  transaction           Transaction? @relation(fields: [transactionId], references: [id])
+
+  @@index([sellerId])
+  @@index([status])
+  @@map("payouts")
+}
+
+model Subscription {
+  id              String           @id @default(cuid())
+  userId          String           @unique
+  plan            SubscriptionPlan @default(FREE)
+  startDate       DateTime         @default(now())
+  endDate         DateTime?
+  isActive        Boolean          @default(true)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("subscriptions")
+}
+
+model BoostScore {
+  id        String   @id @default(cuid())
+  productId String   @unique
+  score     Float    @default(0) // Higher score = higher ranking
+  ownerId   String?  // If set, this product belongs to platform owner
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  owner     User?    @relation(fields: [ownerId], references: [id])
+
+  @@index([score])
+  @@index([productId])
+  @@map("boost_scores")
+}
+
