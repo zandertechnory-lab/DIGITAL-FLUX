@@ -14,7 +14,7 @@ export function BrandLogo({ size = 150 }: BrandLogoProps) {
       <img
         src="/logo.png"
         alt="Digital Flux logo"
-        style={{ height: size, width: 'auto' }}
+        style={{ height: `${size}px`, width: 'auto' }}
         className="object-contain"
       />
     </Link>
