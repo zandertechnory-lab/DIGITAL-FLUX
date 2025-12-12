@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Menu, X } from 'lucide-react'
 import { BrandLogo } from '@/components/brand-logo'
@@ -31,10 +31,42 @@ export function SiteHeader({ session, isSeller, isAdmin, dict }: SiteHeaderProps
 
     const toggleMenu = () => setIsOpen(!isOpen)
 
+    // Smart Navbar Logic
+    const [isVisible, setIsVisible] = useState(true)
+    const [lastScrollY, setLastScrollY] = useState(0)
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY
+
+            // Show navbar at the top or when scrolling up
+            // Hide when scrolling down and past 100px
+            if (currentScrollY < 10) {
+                setIsVisible(true)
+            } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                setIsVisible(false)
+            } else if (currentScrollY < lastScrollY) {
+                setIsVisible(true)
+            }
+
+            setLastScrollY(currentScrollY)
+        }
+
+        window.addEventListener('scroll', handleScroll, { passive: true })
+        return () => window.removeEventListener('scroll', handleScroll)
+    }, [lastScrollY])
+
     return (
-        <header className="sticky top-0 z-30 border-b bg-white/80 backdrop-blur">
-            <div className="container mx-auto flex items-center justify-between gap-4 px-4 py-3">
-                <BrandLogo size={140} />
+        <header className={`sticky top-0 z-30 border-b bg-white/80 backdrop-blur transition-transform duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
+            <div className="container mx-auto flex items-center justify-between gap-4 px-4 py-2 lg:py-3">
+                {/* Mobile Logo */}
+                <div className="lg:hidden">
+                    <BrandLogo size={80} />
+                </div>
+                {/* Desktop Logo */}
+                <div className="hidden lg:block">
+                    <BrandLogo size={140} />
+                </div>
 
                 {/* Desktop Navigation */}
                 <div className="hidden lg:flex flex-1 items-center justify-end gap-6">

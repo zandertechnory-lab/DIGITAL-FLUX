@@ -35,7 +35,7 @@ export default async function RootLayout({
 
   return (
     <html lang={lang}>
-      <body className={inter.className}>
+      <body className={`${inter.className} overflow-x-hidden`}>
         <div className="flex min-h-screen flex-col">
           {/* Upgrade Banner - Only for signed-in users */}
           {session && (
